@@ -117,6 +117,13 @@ Parameters:
     MinValue: 30
     MaxValue: 90
   # EFS parameters
+  CreateEFS:
+    Description: Whether create the default EFS drive for all AZs.
+    Type: String
+    AllowedValues:
+      - "Yes"
+      - "No"
+    ConstraintDescription: must be Yes or No
   EfsName:
     Description: The unique name of the EFS in a region. It must indicate the location of the mount point of the EFS.
     Type: String
@@ -195,6 +202,9 @@ Conditions:
   # Whether create the regional WAFs yes/no
   CondCreateWaf:
     Fn::Equals: [!Ref CreateWaf, "Yes"]
+  # Whether create the default EFS drive yes/no
+  CondCreateEFS:
+    Fn::Equals: [!Ref CreateEFS, "Yes"]
 
 Resources:
   # Create the VPC stack in the AWS Region
@@ -240,6 +250,7 @@ Resources:
   # Create EFS
   Efs1:
     Type: AWS::CloudFormation::Stack
+    Condition: CondCreateEFS
     Properties:
       TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com/${TemplateFolder}/efs.yml"
       TimeoutInMinutes: 5
