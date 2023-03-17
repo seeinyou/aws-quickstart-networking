@@ -287,11 +287,6 @@ Outputs:
     Value: !Ref VpcCidrValue
     Export:
       Name: !Sub "${AWS::StackName}-VpcCidr"
-  # VpcRegionName:
-  #   Description: The algorithem to return the code name of the region
-  #   Value: !GetAtt ["mainVpcStack", "Outputs.VpcRegionName"]
-  #   Export:
-  #     Name: VpcRegionCode
   VpcRegion:
     Description: The AWS region name of where the new VPC is in
     Value: !Ref AWS::Region
