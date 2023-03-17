@@ -30,7 +30,7 @@ Parameters:
     Description: The S3 HTTP domain for all sub-templates
     Type: String
   TemplateFolder:
-    Default: "nested"
+    Default: "cfn-nested"
     Description: The S3 bucket path sub-templates
     Type: String
     MinLength: 1
@@ -44,7 +44,7 @@ Parameters:
     AllowedPattern: "(\\d{1,3})\\.(\\d{1,3})\\.(0)\\.(0)/(16)"
     ConstraintDescription: must be a valid IP CIDR range that ends with /16 like x.x.0.0/16
   NewVpcName:
-    Default: rec-vpc
+    Default: my-1
     Description: The name of the new VPC. It must be unique in an AWS Region
     Type: String
     MinLength: 1
@@ -92,7 +92,7 @@ Parameters:
       - "No"
     ConstraintDescription: must be Yes or No
   RegionBucketPrefix:
-    Default: "rec"
+    Default: "my"
     Description: The prefix of buckets.
     Type: String
     MinLength: 3
