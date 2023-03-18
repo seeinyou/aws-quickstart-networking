@@ -92,7 +92,7 @@ Parameters:
       - "No"
     ConstraintDescription: must be Yes or No
   RegionBucketPrefix:
-    Default: "my"
+    Default: "my-bucket"
     Description: The prefix of buckets.
     Type: String
     MinLength: 3
