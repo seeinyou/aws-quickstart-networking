@@ -27,8 +27,15 @@ Parameters:
   # Nested template locations
   TemplateS3URL:
     Default: ""
-    Description: The S3 HTTP domain for all sub-templates
+    Description: The S3 HTTPS domain for all sub-templates in format https://your-bucket.s3.us-east-1.
     Type: String
+  TemplateS3DomainSuffix:
+    Default: ""
+    Description: The S3 HTTPS domain suffix for mainland China is ".cn". Leave it to empty for other regions.
+    Type: String
+    AllowedValues:
+      - ""
+      - ".cn"
   TemplateFolder:
     Default: "cfn-nested"
     Description: The S3 bucket path sub-templates
@@ -211,7 +218,7 @@ Resources:
   mainVpcStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com/${TemplateFolder}/vpc_nested.yml"
+      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com${TemplateS3DomainSuffix}/${TemplateFolder}/vpc_nested.yml"
       TimeoutInMinutes: 10
       Parameters:
         TheAuthor: !Ref TheAuthor
@@ -232,7 +239,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Condition: CondCreateS3
     Properties:
-      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com/${TemplateFolder}/s3_buckets.yml"
+      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com${TemplateS3DomainSuffix}/${TemplateFolder}/s3_buckets.yml"
       TimeoutInMinutes: 3
       Parameters:
         BucketPrefix: !Ref RegionBucketPrefix
@@ -252,7 +259,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Condition: CondCreateEFS
     Properties:
-      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com/${TemplateFolder}/efs.yml"
+      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com${TemplateS3DomainSuffix}/${TemplateFolder}/efs.yml"
       TimeoutInMinutes: 5
       Parameters:
         TemplateS3URL: !Ref TemplateS3URL
@@ -274,7 +281,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Condition: CondCreateWaf
     Properties:
-      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com/${TemplateFolder}/waf_stack.yml"
+      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com${TemplateS3DomainSuffix}/${TemplateFolder}/waf_stack.yml"
       TimeoutInMinutes: 5
       Parameters:
         TheAuthor: !Ref TheAuthor

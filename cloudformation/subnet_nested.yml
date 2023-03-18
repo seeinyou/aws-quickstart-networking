@@ -65,6 +65,13 @@ Parameters:
     Description: The S3 HTTP domain for all sub-templates
     Type: String
     # MinLength: 1
+  TemplateS3DomainSuffix:
+    Default: ""
+    Description: The S3 HTTPS domain suffix for mainland China is ".cn". Leave it to empty for other regions.
+    Type: String
+    AllowedValues:
+      - ""
+      - ".cn"
   TemplateFolder:
     Default: "nested"
     Description: The S3 bucket path sub-templates
@@ -288,7 +295,7 @@ Resources:
   vpcElbStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com/${TemplateFolder}/elb_nested.yml"
+      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com${TemplateS3DomainSuffix}/${TemplateFolder}/elb_nested.yml"
       TimeoutInMinutes: 5
       Parameters:
         Level: !Ref Level
@@ -311,7 +318,7 @@ Resources:
   ElastiCacheSubnetGroup:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com/${TemplateFolder}/elc_subnet_group_nested.yml"
+      TemplateURL: !Sub "https://${TemplateS3URL}.amazonaws.com${TemplateS3DomainSuffix}/${TemplateFolder}/elc_subnet_group_nested.yml"
       TimeoutInMinutes: 5
       Parameters:
         GroupName: subg-1
